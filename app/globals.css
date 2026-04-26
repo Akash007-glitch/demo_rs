@@ -1,26 +1,143 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --font-display: var(--font-lilita);
+  --color-forest: #234F38;
+  --color-forest-dark: #1A3E2C;
+  --color-forest-light: #2E6347;
+  --color-cream: #F4EBD9;
+  --color-cream-light: #FAF4E9;
+  --color-cream-dark: #E5D7BE;
+  --color-yellow: #F5B324;
+  --color-yellow-hover: #E2A117;
+  --color-tomato: #E63946;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #234F38;
+  color: #F4EBD9;
+  font-family: var(--font-sans), sans-serif;
+  overflow-x: hidden;
 }
+
+:focus-visible {
+  outline: 2px solid #F5B324;
+  outline-offset: 2px;
+}
+
+.font-display {
+  font-family: var(--font-lilita), cursive, system-ui, sans-serif;
+  letter-spacing: 0.04em;
+}
+
+/* Retro Bubble Headline Style */
+.retro-headline {
+  font-family: var(--font-lilita), cursive, sans-serif;
+  color: #244F38;
+  -webkit-text-fill-color: #234F38;
+  -webkit-text-stroke: 3.5px #F4EBD9;
+  paint-order: stroke fill;
+  filter: drop-shadow(0 6px 0px rgba(18, 43, 30, 0.95)) drop-shadow(0 12px 14px rgba(0, 0, 0, 0.35));
+}
+
+@media (min-width: 768px) {
+  .retro-headline {
+    -webkit-text-stroke: 5px #F4EBD9;
+    filter: drop-shadow(0 8px 0px rgba(18, 43, 30, 0.95)) drop-shadow(0 16px 20px rgba(0, 0, 0, 0.4));
+  }
+}
+
+/* Scalloped badge animation */
+@keyframes spin-badge {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-badge {
+  animation: spin-badge 18s linear infinite;
+}
+
+.animate-spin-badge:hover {
+  animation-play-state: paused;
+}
+
+/* Gentle float for hero burger */
+@keyframes hero-float {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.008);
+  }
+}
+
+.animate-hero-float {
+  animation: hero-float 5s ease-in-out infinite;
+}
+
+/* Marquee infinite scroll */
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 22s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Hotspot pulse */
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(245, 179, 36, 0.7);
+  }
+  70% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 10px rgba(245, 179, 36, 0);
+  }
+  100% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(245, 179, 36, 0);
+  }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2.5s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1A3E2C;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #F5B324;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #E2A117;
+}
+

@@ -1,68 +1,181 @@
-import Image from "next/image";
+"use client";
+
+import React, { useState } from "react";
+import Navbar from "./components/Navbar";
+import HeroSection from "./components/HeroSection";
+import MarqueeBanner from "./components/MarqueeBanner";
+import FeatureSection from "./components/FeatureSection";
+import BestSellersSection from "./components/BestSellersSection";
+import DiscoverMenuSection from "./components/DiscoverMenuSection";
+import TestimonialsSection from "./components/TestimonialsSection";
+import ReserveTableSection from "./components/ReserveTableSection";
+import OpeningHoursSection from "./components/OpeningHoursSection";
+import Footer from "./components/Footer";
+import DoodleBackground from "./components/DoodleBackground";
+import { ReservationModal, CartDrawer, MenuModal, CartItem } from "./components/Modals";
 
 export default function Home() {
+  const [reservationOpen, setReservationOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const [cartItems, setCartItems] = useState<CartItem[]>([
+    {
+      id: "burger-classic",
+      name: "BUNBITE DELUXE CHEESE",
+      price: 9.99,
+      quantity: 1,
+      image: "/images/hero_burger.jpg",
+      customization: "Sesame Brioche • Extra Cheddar",
+    },
+  ]);
+
+  const handleAddToCart = (item: Omit<CartItem, "quantity">) => {
+    setCartItems((prev) => {
+      const existing = prev.find((i) => i.id === item.id);
+      if (existing) {
+        return prev.map((i) =>
+          i.id === item.id ? { ...i, quantity: i.quantity + 1 } : i
+        );
+      }
+      return [...prev, { ...item, quantity: 1 }];
+    });
+    setToastMessage(`Added ${item.name} to order!`);
+    setTimeout(() => setToastMessage(null), 3000);
+  };
+
+  const handleUpdateQuantity = (id: string, delta: number) => {
+    setCartItems((prev) =>
+      prev
+        .map((item) => {
+          if (item.id === id) {
+            const newQty = item.quantity + delta;
+            return newQty > 0 ? { ...item, quantity: newQty } : null;
+          }
+          return item;
+        })
+        .filter(Boolean) as CartItem[]
+    );
+  };
+
+  const handleRemoveItem = (id: string) => {
+    setCartItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const handleCheckout = () => {
+    setCartItems([]);
+  };
+
+  const totalCartCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <div className="min-h-screen bg-[#EFE6D5] p-0 sm:p-4 md:p-6 lg:p-8 flex justify-center items-center">
+      {/* Main Card Frame with Rounded Borders (matches Mockup Canvas) */}
+      <main className="relative w-full max-w-6xl bg-[#234F38] shadow-2xl rounded-none sm:rounded-[36px] overflow-hidden border-0 sm:border-[10px] border-[#EFE6D5]">
+        
+        {/* Subtle Hand-Drawn Food Line Doodles Pattern */}
+        <DoodleBackground />
+
+        {/* Navigation Bar */}
+        <Navbar
+          cartCount={totalCartCount}
+          onOpenCart={() => setCartOpen(true)}
+          onOpenReservation={() => setReservationOpen(true)}
+          onOpenMenu={() => setMenuOpen(true)}
+          onNavigateSection={scrollToSection}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+
+        {/* Hero Section: DELICIOUS BURGERS, Hands Holding Burger, Sunburst Badge */}
+        <HeroSection
+          onOpenReservation={() => setReservationOpen(true)}
+          onOpenOrder={() => setMenuOpen(true)}
+        />
+
+        {/* Marquee Ribbon Banner with Asterisks */}
+        <MarqueeBanner />
+
+        {/* WHAT MAKES BUNBITE DIFFERENT? Section */}
+        <FeatureSection onSelectFeature={() => {}} />
+
+        {/* BEST SELLERS Section */}
+        <BestSellersSection
+          onAddToCart={handleAddToCart}
+          onOpenMenu={() => setMenuOpen(true)}
+        />
+
+        {/* DISCOVER OUR MENUS Section */}
+        <DiscoverMenuSection onAddToCart={handleAddToCart} />
+
+        {/* BITES OF HAPPINESS Testimonials Section */}
+        <TestimonialsSection />
+
+        {/* RESERVE YOUR TABLE Split Card Section */}
+        <ReserveTableSection />
+
+        {/* OPENING HOURS Cloud Section */}
+        <OpeningHoursSection />
+
+        {/* 3-Column Bottom FOOTER */}
+        <Footer />
+
+        {/* Toast Notification */}
+        {toastMessage && (
+          <div
+            role="status"
+            aria-live="polite"
+            className="fixed bottom-6 right-6 z-50 bg-[#F5B324] text-[#234F38] px-4 sm:px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 animate-in slide-in-from-bottom-5 duration-300 border-2 border-[#234F38]"
           >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
+            <span className="text-xl">🍔</span>
+            <div>
+              <p className="text-xs font-black uppercase tracking-wider font-display leading-tight">{toastMessage}</p>
+            </div>
+            <button
+              onClick={() => {
+                setToastMessage(null);
+                setCartOpen(true);
+              }}
+              className="ml-2 px-3 py-1 rounded-xl bg-[#234F38] text-[#F4EBD9] font-display text-[11px] uppercase tracking-wider font-bold hover:bg-[#1A3E2C] transition-colors cursor-pointer"
+            >
+              VIEW CART
+            </button>
+            <button
+              onClick={() => setToastMessage(null)}
+              aria-label="Dismiss message"
+              className="p-1 text-[#234F38]/70 hover:text-[#234F38] cursor-pointer"
+            >
+              ✕
+            </button>
+          </div>
+        )}
+
+        {/* Modals and Drawers */}
+        <ReservationModal
+          isOpen={reservationOpen}
+          onClose={() => setReservationOpen(false)}
+        />
+
+        <CartDrawer
+          isOpen={cartOpen}
+          onClose={() => setCartOpen(false)}
+          items={cartItems}
+          onUpdateQuantity={handleUpdateQuantity}
+          onRemoveItem={handleRemoveItem}
+          onCheckout={handleCheckout}
+        />
+
+        <MenuModal
+          isOpen={menuOpen}
+          onClose={() => setMenuOpen(false)}
+          onAddToCart={handleAddToCart}
+        />
       </main>
     </div>
   );
