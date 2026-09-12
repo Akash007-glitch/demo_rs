@@ -8,14 +8,12 @@ import FeatureSection from "./components/FeatureSection";
 import BestSellersSection from "./components/BestSellersSection";
 import DiscoverMenuSection from "./components/DiscoverMenuSection";
 import TestimonialsSection from "./components/TestimonialsSection";
-import ReserveTableSection from "./components/ReserveTableSection";
 import OpeningHoursSection from "./components/OpeningHoursSection";
 import Footer from "./components/Footer";
 import DoodleBackground from "./components/DoodleBackground";
-import { ReservationModal, CartDrawer, MenuModal, CartItem } from "./components/Modals";
+import { CartDrawer, MenuModal, CartItem } from "./components/Modals";
 
 export default function Home() {
-  const [reservationOpen, setReservationOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -88,14 +86,12 @@ export default function Home() {
         <Navbar
           cartCount={totalCartCount}
           onOpenCart={() => setCartOpen(true)}
-          onOpenReservation={() => setReservationOpen(true)}
           onOpenMenu={() => setMenuOpen(true)}
           onNavigateSection={scrollToSection}
         />
 
         {/* Hero Section: DELICIOUS BURGERS, Hands Holding Burger, Sunburst Badge */}
         <HeroSection
-          onOpenReservation={() => setReservationOpen(true)}
           onOpenOrder={() => setMenuOpen(true)}
         />
 
@@ -116,9 +112,6 @@ export default function Home() {
 
         {/* BITES OF HAPPINESS Testimonials Section */}
         <TestimonialsSection />
-
-        {/* RESERVE YOUR TABLE Split Card Section */}
-        <ReserveTableSection />
 
         {/* OPENING HOURS Cloud Section */}
         <OpeningHoursSection />
@@ -157,11 +150,6 @@ export default function Home() {
         )}
 
         {/* Modals and Drawers */}
-        <ReservationModal
-          isOpen={reservationOpen}
-          onClose={() => setReservationOpen(false)}
-        />
-
         <CartDrawer
           isOpen={cartOpen}
           onClose={() => setCartOpen(false)}

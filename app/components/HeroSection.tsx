@@ -2,14 +2,13 @@
 
 import React from "react";
 import Image from "next/image";
-import { Utensils, Calendar, Star, Clock, Flame } from "lucide-react";
+import { Utensils, Star, Clock, Flame } from "lucide-react";
 
 interface HeroSectionProps {
-  onOpenReservation: () => void;
   onOpenOrder: () => void;
 }
 
-export default function HeroSection({ onOpenReservation, onOpenOrder }: HeroSectionProps) {
+export default function HeroSection({ onOpenOrder }: HeroSectionProps) {
   return (
     <section className="relative pt-6 sm:pt-10 pb-0 overflow-hidden text-center z-10">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 relative flex flex-col items-center">
@@ -52,13 +51,12 @@ export default function HeroSection({ onOpenReservation, onOpenOrder }: HeroSect
             <span>ORDER ONLINE</span>
           </button>
 
-          <button
-            onClick={onOpenReservation}
+          <a
+            href="#menu"
             className="inline-flex items-center gap-2 bg-transparent hover:bg-[#F4EBD9] text-[#F4EBD9] hover:text-[#234F38] border-2 border-[#F4EBD9] font-display text-sm sm:text-base px-5 sm:px-7 py-2.5 rounded-full transition-all transform hover:scale-105 active:scale-95 cursor-pointer uppercase tracking-wider font-bold focus-visible:ring-2 focus-visible:ring-[#F5B324]"
           >
-            <Calendar className="w-4 h-4" />
-            <span>BOOK A TABLE</span>
-          </button>
+            <span>EXPLORE MENU</span>
+          </a>
         </div>
 
         {/* Key USPs / Badges */}
@@ -89,10 +87,10 @@ export default function HeroSection({ onOpenReservation, onOpenOrder }: HeroSect
             <div className="absolute inset-0 rounded-full ring-1 ring-inset ring-[#F4EBD9]/30 pointer-events-none" />
           </div>
 
-          {/* Floating Rotating "Reserve a Table" Sunburst Badge */}
+          {/* Floating Rotating "Order Online" Sunburst Badge */}
           <button
-            onClick={onOpenReservation}
-            aria-label="Reserve a Table"
+            onClick={onOpenOrder}
+            aria-label="Order Online Now"
             className="group absolute right-0 sm:right-4 md:right-6 top-[48%] -translate-y-1/2 z-20 cursor-pointer transform hover:scale-110 active:scale-95 transition-all duration-300 focus-visible:ring-2 focus-visible:ring-[#F5B324] rounded-full"
           >
             <div className="relative w-20 h-20 sm:w-28 sm:h-28 md:w-32 md:h-32 flex items-center justify-center filter drop-shadow-lg">
@@ -116,7 +114,7 @@ export default function HeroSection({ onOpenReservation, onOpenOrder }: HeroSect
                 />
                 <text className="text-[9.5px] font-bold fill-[#234F38] tracking-[0.14em] uppercase font-sans">
                   <textPath href="#tableTextPath" startOffset="0%">
-                    • Reserve a Table • Reserve a Table
+                    • ORDER ONLINE • ORDER NOW
                   </textPath>
                 </text>
               </svg>

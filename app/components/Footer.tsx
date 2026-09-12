@@ -59,10 +59,10 @@ export default function Footer() {
                   Food District, New York, NY 10001
                 </p>
                 <button
-                  onClick={() => scrollTo("reservation")}
+                  onClick={() => scrollTo("hours")}
                   className="inline-flex items-center gap-1 font-display text-xs text-[#234F38] hover:text-[#C83E38] tracking-wider uppercase underline underline-offset-4 transition-colors cursor-pointer"
                 >
-                  VISIT & DINE IN <ArrowUpRight className="w-3.5 h-3.5" />
+                  VIEW OPENING HOURS <ArrowUpRight className="w-3.5 h-3.5" />
                 </button>
               </div>
             </div>
@@ -152,7 +152,7 @@ export default function Footer() {
             </h4>
             
             <p className="text-xs text-[#234F38]/85 leading-relaxed font-medium">
-              Join the BunBite Club for $5 off your first order, secret menu drops & exclusive rewards!
+              Join the BunBite Club for ₹5 off your first order, secret menu drops & exclusive rewards!
             </p>
 
             {/* Newsletter Input */}
@@ -180,7 +180,7 @@ export default function Footer() {
               {subscribed && (
                 <p className="text-[11px] text-emerald-800 font-bold mt-1.5 flex items-center gap-1">
                   <CheckCircle2 className="w-3.5 h-3.5 text-emerald-700" />
-                  <span>Welcome! Check your inbox for $5 off coupon code.</span>
+                  <span>Welcome! Check your inbox for ₹5 off coupon code.</span>
                 </p>
               )}
               {error && (

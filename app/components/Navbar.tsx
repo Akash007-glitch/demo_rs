@@ -1,12 +1,11 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { ShoppingBag, Menu as MenuIcon, X, CalendarCheck, Utensils } from "lucide-react";
+import { ShoppingBag, Menu as MenuIcon, X, Utensils } from "lucide-react";
 
 interface NavbarProps {
   cartCount: number;
   onOpenCart: () => void;
-  onOpenReservation: () => void;
   onOpenMenu: () => void;
   onNavigateSection: (sectionId: string) => void;
 }
@@ -14,7 +13,6 @@ interface NavbarProps {
 export default function Navbar({
   cartCount,
   onOpenCart,
-  onOpenReservation,
   onOpenMenu,
   onNavigateSection,
 }: NavbarProps) {
@@ -97,14 +95,6 @@ export default function Navbar({
             <span>FULL MENU</span>
           </button>
 
-          {/* Reserve Table Button */}
-          <button
-            onClick={onOpenReservation}
-            className="hidden lg:inline-flex items-center gap-1.5 bg-transparent border border-[#F4EBD9]/40 text-[#F4EBD9] font-bold text-xs px-3.5 py-2 rounded-full hover:bg-[#F4EBD9] hover:text-[#234F38] transition-all cursor-pointer tracking-wider uppercase font-display focus-visible:ring-2 focus-visible:ring-[#F5B324]"
-          >
-            <CalendarCheck className="w-3.5 h-3.5" />
-            <span>BOOK TABLE</span>
-          </button>
 
           {/* Order Now Button */}
           <button
@@ -161,18 +151,9 @@ export default function Navbar({
                   onOpenMenu();
                   setMobileMenuOpen(false);
                 }}
-                className="w-full py-2.5 rounded-xl bg-[#F4EBD9] text-[#234F38] font-display font-bold text-center tracking-wider text-sm hover:bg-white transition-colors"
-              >
-                BROWSE FULL MENU
-              </button>
-              <button
-                onClick={() => {
-                  onOpenReservation();
-                  setMobileMenuOpen(false);
-                }}
                 className="w-full py-2.5 rounded-xl bg-[#F5B324] text-[#234F38] font-display font-bold text-center tracking-wider text-sm hover:bg-[#E2A117] transition-colors"
               >
-                RESERVE A TABLE
+                ORDER NOW
               </button>
             </div>
           </div>

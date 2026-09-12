@@ -8,9 +8,6 @@ import {
   ShoppingBag,
   Plus,
   Minus,
-  Calendar,
-  Users,
-  Clock,
   Trash2,
   Tag,
   CreditCard,
@@ -32,234 +29,7 @@ export interface CartItem {
 }
 
 // ----------------------------------------------------
-// 1. RESERVATION MODAL
-// ----------------------------------------------------
-export function ReservationModal({
-  isOpen,
-  onClose,
-}: {
-  isOpen: boolean;
-  onClose: () => void;
-}) {
-  const [submitted, setSubmitted] = useState(false);
-  const [bookingCode, setBookingCode] = useState("");
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    guests: "2",
-    date: "",
-    time: "19:00",
-    seating: "Indoor Dining Room",
-  });
-
-  const todayStr = new Date().toISOString().split("T")[0];
-
-  // Close on Escape key and lock body scroll
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isOpen) onClose();
-    };
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-      window.addEventListener("keydown", handleKeyDown);
-    }
-    return () => {
-      document.body.style.overflow = "";
-      window.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isOpen, onClose]);
-
-  if (!isOpen) return null;
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setBookingCode(`BB-${Math.floor(1000 + Math.random() * 9000)}`);
-    setSubmitted(true);
-  };
-
-  const handleResetAndClose = () => {
-    setSubmitted(false);
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      guests: "2",
-      date: "",
-      time: "19:00",
-      seating: "Indoor Dining Room",
-    });
-    onClose();
-  };
-
-  return (
-    <div
-      role="dialog"
-      aria-modal="true"
-      aria-label="Table Reservation"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
-      }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-sm animate-in fade-in duration-200"
-    >
-      <div className="relative w-full max-w-lg bg-[#234F38] border-2 border-[#F5B324] rounded-3xl p-6 sm:p-8 text-[#F4EBD9] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
-        {/* Close Button */}
-        <button
-          onClick={onClose}
-          aria-label="Close dialog"
-          className="absolute top-5 right-5 p-2 rounded-full bg-[#1A3E2C] text-[#F4EBD9] hover:bg-[#F5B324] hover:text-[#234F38] transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-[#F5B324]"
-        >
-          <X className="w-5 h-5" />
-        </button>
-
-        {submitted ? (
-          <div className="text-center py-6 animate-in zoom-in-95 duration-200 space-y-4">
-            <div className="w-16 h-16 rounded-full bg-[#F5B324] text-[#234F38] flex items-center justify-center mx-auto shadow-lg ring-4 ring-[#F5B324]/30">
-              <Check className="w-8 h-8 stroke-[3]" />
-            </div>
-            <h3 className="font-display text-3xl text-[#F4EBD9] uppercase">
-              TABLE RESERVED!
-            </h3>
-            <p className="text-xs sm:text-sm text-[#F4EBD9]/85 max-w-xs mx-auto">
-              We&apos;re thrilled to host you, <strong className="text-[#F5B324]">{formData.name}</strong>! Table for {formData.guests} on {formData.date || "your requested date"} at {formData.time}.
-            </p>
-
-            <div className="bg-[#1A3E2C] p-3 rounded-2xl border border-[#F5B324]/30 text-xs text-[#F4EBD9]/90 max-w-xs mx-auto">
-              <span className="text-[10px] text-[#F5B324] font-bold block uppercase tracking-wider">Booking Reference</span>
-              <span className="font-display text-lg tracking-widest">#{bookingCode}</span>
-            </div>
-
-            <button
-              onClick={handleResetAndClose}
-              className="mt-2 px-8 py-2.5 rounded-full bg-[#F5B324] text-[#234F38] font-display text-sm font-bold uppercase tracking-wider hover:bg-[#E2A117] transition-all cursor-pointer"
-            >
-              DONE
-            </button>
-          </div>
-        ) : (
-          <div>
-            <div className="text-center mb-6">
-              <span className="text-xs font-bold text-[#F5B324] tracking-widest uppercase">
-                BUNBITE EXPERIENCE
-              </span>
-              <h3 className="font-display text-3xl sm:text-4xl text-[#F4EBD9] uppercase mt-1">
-                RESERVE A TABLE
-              </h3>
-              <p className="text-xs sm:text-sm text-[#F4EBD9]/80 mt-1">
-                Book your spot for the freshest, juiciest burger feast in town.
-              </p>
-            </div>
-
-            <form onSubmit={handleSubmit} className="space-y-3.5">
-              <div>
-                <label className="block text-[11px] font-bold text-[#F4EBD9] tracking-wider uppercase mb-1">
-                  Full Name *
-                </label>
-                <input
-                  required
-                  type="text"
-                  placeholder="e.g. Alex Johnson"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full bg-[#1A3E2C] border border-[#F4EBD9]/30 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-[#F4EBD9] placeholder-[#F4EBD9]/40 focus:outline-none focus:border-[#F5B324]"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-[11px] font-bold text-[#F4EBD9] tracking-wider uppercase mb-1">
-                    Email Address *
-                  </label>
-                  <input
-                    required
-                    type="email"
-                    placeholder="alex@example.com"
-                    value={formData.email}
-                    onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                    className="w-full bg-[#1A3E2C] border border-[#F4EBD9]/30 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-[#F4EBD9] placeholder-[#F4EBD9]/40 focus:outline-none focus:border-[#F5B324]"
-                  />
-                </div>
-                <div>
-                  <label className="block text-[11px] font-bold text-[#F4EBD9] tracking-wider uppercase mb-1">
-                    Phone *
-                  </label>
-                  <input
-                    required
-                    type="tel"
-                    placeholder="+1 (555) 000-0000"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    className="w-full bg-[#1A3E2C] border border-[#F4EBD9]/30 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-[#F4EBD9] placeholder-[#F4EBD9]/40 focus:outline-none focus:border-[#F5B324]"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-3">
-                <div>
-                  <label className="block text-[11px] font-bold text-[#F4EBD9] tracking-wider uppercase mb-1 flex items-center gap-1">
-                    <Users className="w-3.5 h-3.5 text-[#F5B324]" /> Guests
-                  </label>
-                  <select
-                    value={formData.guests}
-                    onChange={(e) => setFormData({ ...formData, guests: e.target.value })}
-                    className="w-full bg-[#1A3E2C] border border-[#F4EBD9]/30 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-[#F4EBD9] focus:outline-none focus:border-[#F5B324] cursor-pointer"
-                  >
-                    <option value="1">1 Person</option>
-                    <option value="2">2 Persons</option>
-                    <option value="4">4 Persons</option>
-                    <option value="6">6 Persons</option>
-                    <option value="8+">8+ Party</option>
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-[11px] font-bold text-[#F4EBD9] tracking-wider uppercase mb-1 flex items-center gap-1">
-                    <Clock className="w-3.5 h-3.5 text-[#F5B324]" /> Time
-                  </label>
-                  <select
-                    value={formData.time}
-                    onChange={(e) => setFormData({ ...formData, time: e.target.value })}
-                    className="w-full bg-[#1A3E2C] border border-[#F4EBD9]/30 rounded-xl px-3 py-2.5 text-xs sm:text-sm text-[#F4EBD9] focus:outline-none focus:border-[#F5B324] cursor-pointer"
-                  >
-                    <option value="12:00">12:00 PM (Lunch)</option>
-                    <option value="13:30">1:30 PM (Lunch)</option>
-                    <option value="18:00">6:00 PM (Dinner)</option>
-                    <option value="19:30">7:30 PM (Dinner)</option>
-                    <option value="21:00">9:00 PM (Late Night)</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-[11px] font-bold text-[#F4EBD9] tracking-wider uppercase mb-1 flex items-center gap-1">
-                  <Calendar className="w-3.5 h-3.5 text-[#F5B324]" /> Date *
-                </label>
-                <input
-                  required
-                  type="date"
-                  min={todayStr}
-                  value={formData.date}
-                  onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                  className="w-full bg-[#1A3E2C] border border-[#F4EBD9]/30 rounded-xl px-4 py-2.5 text-xs sm:text-sm text-[#F4EBD9] focus:outline-none focus:border-[#F5B324]"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full mt-2 py-3 rounded-2xl bg-[#F5B324] hover:bg-[#E2A117] text-[#234F38] font-display text-base tracking-wider uppercase font-bold transition-all shadow-lg active:scale-98 cursor-pointer"
-              >
-                CONFIRM RESERVATION
-              </button>
-            </form>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-// ----------------------------------------------------
-// 2. CART DRAWER & COMPLETE CHECKOUT FLOW
+// 1. CART DRAWER & COMPLETE CHECKOUT FLOW
 // ----------------------------------------------------
 export function CartDrawer({
   isOpen,
@@ -412,7 +182,7 @@ export function CartDrawer({
                           {item.name}
                         </h5>
                         <p className="text-xs text-[#F5B324] font-bold">
-                          ${(item.price * item.quantity).toFixed(2)}
+                          ₹{(item.price * item.quantity).toFixed(2)}
                         </p>
                         {item.customization && (
                           <p className="text-[10px] text-[#F4EBD9]/60 truncate">{item.customization}</p>
@@ -586,7 +356,7 @@ export function CartDrawer({
                 type="submit"
                 className="w-full py-3.5 mt-2 rounded-2xl bg-[#F5B324] hover:bg-[#E2A117] text-[#234F38] font-display text-base tracking-wider uppercase font-bold transition-all shadow-lg active:scale-98 cursor-pointer flex items-center justify-center gap-2"
               >
-                <span>PAY & PLACE ORDER (${grandTotal.toFixed(2)})</span>
+                <span>PAY & PLACE ORDER (₹{grandTotal.toFixed(2)})</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </form>
@@ -636,27 +406,27 @@ export function CartDrawer({
             <div className="space-y-1.5 text-xs text-[#F4EBD9]/80">
               <div className="flex justify-between">
                 <span>Subtotal</span>
-                <span className="font-bold text-[#F4EBD9]">${rawSubtotal.toFixed(2)}</span>
+                <span className="font-bold text-[#F4EBD9]">₹{rawSubtotal.toFixed(2)}</span>
               </div>
               {discountPercent > 0 && (
                 <div className="flex justify-between text-emerald-400 font-bold">
                   <span>Discount ({discountPercent}%)</span>
-                  <span>-${discountAmount.toFixed(2)}</span>
+                  <span>-₹{discountAmount.toFixed(2)}</span>
                 </div>
               )}
               <div className="flex justify-between">
                 <span>Express Hot Delivery</span>
                 <span className="font-bold text-[#F4EBD9]">
-                  {delivery === 0 ? "FREE" : `$${delivery.toFixed(2)}`}
+                  {delivery === 0 ? "FREE" : `₹${delivery.toFixed(2)}`}
                 </span>
               </div>
               <div className="flex justify-between">
                 <span>Estimated Tax (8%)</span>
-                <span className="font-bold text-[#F4EBD9]">${tax.toFixed(2)}</span>
+                <span className="font-bold text-[#F4EBD9]">₹{tax.toFixed(2)}</span>
               </div>
               <div className="flex justify-between text-base font-bold text-[#F5B324] pt-2 border-t border-[#F4EBD9]/10">
                 <span className="font-display uppercase tracking-wider">TOTAL</span>
-                <span className="font-display text-xl">${grandTotal.toFixed(2)}</span>
+                <span className="font-display text-xl">₹{grandTotal.toFixed(2)}</span>
               </div>
             </div>
 
@@ -901,7 +671,7 @@ export function MenuModal({
 
                 <div className="flex items-center justify-between mt-2.5 pt-2 border-t border-[#F4EBD9]/10">
                   <span className="font-display text-base text-[#F5B324] font-bold">
-                    ${item.price.toFixed(2)}
+                    ₹{item.price.toFixed(2)}
                   </span>
                   <button
                     onClick={() => handleAdd(item)}

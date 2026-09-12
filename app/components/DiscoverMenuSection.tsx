@@ -399,7 +399,7 @@ export default function DiscoverMenuSection({ onAddToCart }: DiscoverMenuSection
                           {item.description}
                         </p>
                         <span className="font-display text-sm sm:text-base text-[#234F38] font-bold mt-1 inline-block">
-                          ${item.price.toFixed(2)}
+                          ₹{item.price.toFixed(2)}
                         </span>
                       </div>
                       <button
@@ -493,7 +493,7 @@ export default function DiscoverMenuSection({ onAddToCart }: DiscoverMenuSection
                                   {featuredItem.name}
                                 </h4>
                                 <span className="font-display text-lg text-[#F5B324] font-bold">
-                                  ${featuredItem.price.toFixed(2)}
+                                  ₹{featuredItem.price.toFixed(2)}
                                 </span>
                               </div>
                               <span className="font-display text-[10px] text-[#F5B324] tracking-widest uppercase">
@@ -560,7 +560,7 @@ export default function DiscoverMenuSection({ onAddToCart }: DiscoverMenuSection
 
                                 <div className="flex items-center gap-3 shrink-0">
                                   <span className="font-display text-base text-[#234F38] font-bold">
-                                    ${item.price.toFixed(2)}
+                                    ₹{item.price.toFixed(2)}
                                   </span>
 
                                   <button

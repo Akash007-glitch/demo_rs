@@ -154,7 +154,7 @@ export default function BestSellersSection({
                   {/* Price */}
                   <div className="mt-4 flex items-baseline justify-center gap-1">
                     <span className="font-display text-2xl sm:text-3xl text-white font-bold">
-                      ${burger.price.toFixed(2)}
+                      ₹{burger.price.toFixed(2)}
                     </span>
                     <span className="text-[11px] text-white/70 uppercase tracking-wider font-semibold">
                       • combo ready

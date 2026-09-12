@@ -55,14 +55,12 @@ it("All main navigation target anchors exist in component source files", () => {
   const features = fs.readFileSync(path.resolve("app/components/FeatureSection.tsx"), "utf8");
   const testimonials = fs.readFileSync(path.resolve("app/components/TestimonialsSection.tsx"), "utf8");
   const hours = fs.readFileSync(path.resolve("app/components/OpeningHoursSection.tsx"), "utf8");
-  const reservation = fs.readFileSync(path.resolve("app/components/ReserveTableSection.tsx"), "utf8");
 
   assert.ok(discoverMenu.includes('id="menu"'), "Menu section anchor missing");
   assert.ok(bestSellers.includes('id="bestsellers"'), "Best sellers section anchor missing");
   assert.ok(features.includes('id="features"'), "Features section anchor missing");
   assert.ok(testimonials.includes('id="testimonials"'), "Testimonials section anchor missing");
   assert.ok(hours.includes('id="hours"'), "Hours section anchor missing");
-  assert.ok(reservation.includes('id="reservation"'), "Reservation section anchor missing");
 });
 
 // 3. Cart & Order Calculation Rules
@@ -121,20 +119,19 @@ it("Opening hours calculation handles weekdays and weekends properly without 12P
   assert.strictEqual(checkHours(6, 24), false, "Saturday 12am midnight should be closed");
 });
 
-// 5. Reservation Validation Rules
-it("Reservation date validation prevents past bookings", () => {
-  const today = new Date().toISOString().split("T")[0];
-  const yesterday = new Date(Date.now() - 86400000).toISOString().split("T")[0];
-  const tomorrow = new Date(Date.now() + 86400000).toISOString().split("T")[0];
-
-  assert.ok(yesterday < today, "Yesterday is before today");
-  assert.ok(tomorrow > today, "Tomorrow is after today");
-
+// 5. Table Booking Removed & Online Ordering Active
+it("Table reservation system is completely removed and online ordering is active", () => {
+  const pageSrc = fs.readFileSync(path.resolve("app/page.tsx"), "utf8");
+  const navSrc = fs.readFileSync(path.resolve("app/components/Navbar.tsx"), "utf8");
   const modalSrc = fs.readFileSync(path.resolve("app/components/Modals.tsx"), "utf8");
-  const reserveSrc = fs.readFileSync(path.resolve("app/components/ReserveTableSection.tsx"), "utf8");
+  const heroSrc = fs.readFileSync(path.resolve("app/components/HeroSection.tsx"), "utf8");
 
-  assert.ok(modalSrc.includes("min={todayStr}"), "ReservationModal must have min date restriction");
-  assert.ok(reserveSrc.includes("min={todayStr}"), "ReserveTableSection must have min date restriction");
+  assert.ok(!pageSrc.includes("ReserveTableSection"), "ReserveTableSection must not be in page");
+  assert.ok(!pageSrc.includes("ReservationModal"), "ReservationModal must not be in page");
+  assert.ok(!navSrc.includes("BOOK TABLE"), "Navbar must not have BOOK TABLE button");
+  assert.ok(!heroSrc.includes("BOOK A TABLE"), "Hero must not have BOOK A TABLE button");
+  assert.ok(!modalSrc.includes("ReservationModal"), "Modals must not export ReservationModal");
+  assert.ok(!fs.existsSync(path.resolve("app/components/ReserveTableSection.tsx")), "ReserveTableSection file must be removed");
 });
 
 // 6. Accessibility & Keyboard Navigation
